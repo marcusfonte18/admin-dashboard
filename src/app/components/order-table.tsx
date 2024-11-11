@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// OrderTable.tsx
 import React, { useState, useMemo } from 'react';
 import { MoreVertical, Download, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Order, SortConfig, SortDirection, SortableHeaderProps } from './types';

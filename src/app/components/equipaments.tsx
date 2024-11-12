@@ -1,28 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
 import {
-  MoreVertical,
+  Package2,
+  Settings,
+  Users,
   Mail,
   Phone,
   Edit,
   Trash2,
-  MapPin,
-  Building,
-  Package,
-  DollarSign,
-  Users,
+  MoreVertical,
 } from "lucide-react";
 import { SortableHeader } from "./table/sortable-header";
-import { Customer, SortConfig } from "./types";
-import { CustomerEditModal } from "./modal-customers";
-import AddCustomerButton from "./modal-add-customer";
 
-const useSortableData = (
-  items: Customer[],
-  config: SortConfig<Customer> | null = null
-) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig<Customer> | null>(
-    config
-  );
+const useSortableData = (items: any, config = null) => {
+  const [sortConfig, setSortConfig] = useState<any>(config);
 
   const sortedItems = useMemo(() => {
     const sortableItems = [...items];
@@ -40,8 +31,8 @@ const useSortableData = (
     return sortableItems;
   }, [items, sortConfig]);
 
-  const requestSort = (key: keyof Customer) => {
-    let direction: "ascending" | "descending" = "ascending";
+  const requestSort = (key: string) => {
+    let direction = "ascending";
     if (sortConfig?.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
     }
@@ -51,124 +42,113 @@ const useSortableData = (
   return { items: sortedItems, requestSort, sortConfig };
 };
 
-const CustomerTable = () => {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
-  );
+const EquipmentDashboard = () => {
+  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // const [selectedEquipment, setSelectedEquipment] = useState(null);
 
-  const customers: Customer[] = [
+  const equipment = [
     {
       id: "001",
-      name: "João Silva",
-      email: "joao.silva@email.com",
-      phone: "(11) 99999-9999",
-      company: "Tech Solutions Ltd",
+      name: "Impressora HP LaserJet",
+      model: "HP-2055DN",
+      serialNumber: "SN-2024-001",
+      status: "in_use",
+      lastMaintenance: "15-03-2024",
+      currentClient: "Tech Solutions Ltd",
       location: "São Paulo, SP",
-      totalOrders: 23,
-      lastOrderDate: "21-03-2024",
-      status: "active",
-      totalSpent: "R$ 12.459,00",
+      maintenanceCount: 12,
+      utilizationRate: "85%",
     },
     {
       id: "002",
-      name: "Maria Santos",
-      email: "maria.santos@email.com",
-      phone: "(21) 98888-8888",
-      company: "Digital Services Inc",
+      name: "Scanner Epson",
+      model: "ET-2850",
+      serialNumber: "SN-2024-002",
+      status: "available",
+      lastMaintenance: "18-03-2024",
+      currentClient: "Digital Services Inc",
       location: "Rio de Janeiro, RJ",
-      totalOrders: 15,
-      lastOrderDate: "18-03-2024",
-      status: "active",
-      totalSpent: "R$ 8.732,00",
+      maintenanceCount: 8,
+      utilizationRate: "72%",
     },
     {
       id: "003",
-      name: "Pedro Oliveira",
-      email: "pedro.oliveira@email.com",
-      phone: "(31) 97777-7777",
-      company: "Global Systems",
+      name: "Copiadora Xerox",
+      model: "WorkCentre 3345",
+      serialNumber: "SN-2024-003",
+      status: "maintenance",
+      lastMaintenance: "20-03-2024",
+      currentClient: "Global Systems",
       location: "Belo Horizonte, MG",
-      totalOrders: 8,
-      lastOrderDate: "15-03-2024",
-      status: "inactive",
-      totalSpent: "R$ 4.289,00",
+      maintenanceCount: 15,
+      utilizationRate: "93%",
     },
   ];
 
-  const { items, requestSort, sortConfig } = useSortableData(customers);
+  const { items, requestSort, sortConfig } = useSortableData(equipment);
 
   const stats = {
-    totalCustomers: customers.length,
-    activeCustomers: customers.filter((c) => c.status === "active").length,
-    totalRevenue: customers.reduce(
-      (acc, curr) =>
-        acc +
-        parseFloat(
-          curr.totalSpent.replace("R$ ", "").replace(".", "").replace(",", ".")
-        ),
-      0
-    ),
-    averageOrders:
-      customers.reduce((acc, curr) => acc + curr.totalOrders, 0) /
-      customers.length,
+    totalEquipment: equipment.length,
+    inUseEquipment: equipment.filter((e) => e.status === "in_use").length,
+    maintenanceEquipment: equipment.filter((e) => e.status === "maintenance")
+      .length,
+    availableEquipment: equipment.filter((e) => e.status === "available")
+      .length,
   };
 
   return (
     <div className="space-y-6">
-      {/* Customer Stats */}
+      {/* Equipment Stats */}
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm text-gray-500">Total Clientes</p>
-              <p className="text-2xl font-bold">{stats.totalCustomers}</p>
+              <p className="text-sm text-gray-500">Total Equipamentos</p>
+              <p className="text-2xl font-bold">{stats.totalEquipment}</p>
             </div>
             <div className="p-2 bg-purple-100 rounded-lg">
-              <Users className="h-5 w-5 text-purple-600" />
+              <Package2 className="h-5 w-5 text-purple-600" />
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm text-gray-500">Clientes Ativos</p>
-              <p className="text-2xl font-bold">{stats.activeCustomers}</p>
+              <p className="text-sm text-gray-500">Em Uso</p>
+              <p className="text-2xl font-bold">{stats.inUseEquipment}</p>
             </div>
             <div className="p-2 bg-green-100 rounded-lg">
-              <Building className="h-5 w-5 text-green-600" />
+              <Users className="h-5 w-5 text-green-600" />
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm text-gray-500">Receita Total</p>
-              <p className="text-2xl font-bold">
-                R$ {stats.totalRevenue.toLocaleString("pt-BR")}
-              </p>
+              <p className="text-sm text-gray-500">Em Manutenção</p>
+              <p className="text-2xl font-bold">{stats.maintenanceEquipment}</p>
             </div>
             <div className="p-2 bg-blue-100 rounded-lg">
-              <DollarSign className="h-5 w-5 text-blue-600" />
+              <Settings className="h-5 w-5 text-blue-600" />
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm text-gray-500">Média de Pedidos</p>
-              <p className="text-2xl font-bold">
-                {stats.averageOrders.toFixed(1)}
-              </p>
+              <p className="text-sm text-gray-500">Disponíveis</p>
+              <p className="text-2xl font-bold">{stats.availableEquipment}</p>
             </div>
             <div className="p-2 bg-orange-100 rounded-lg">
-              <Package className="h-5 w-5 text-orange-600" />
+              <Package2 className="h-5 w-5 text-orange-600" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Customer Table */}
+      {/* <AddEquipmentButton /> */}
+
+      {/* Equipment Table */}
       <div className="bg-white rounded-lg shadow">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -176,31 +156,31 @@ const CustomerTable = () => {
               <tr className="text-left border-b">
                 <SortableHeader
                   name="name"
-                  label="Cliente"
+                  label="Equipamento"
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
                 <SortableHeader
-                  name="company"
-                  label="Empresa"
+                  name="serialNumber"
+                  label="Número de Série"
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
                 <SortableHeader
-                  name="totalOrders"
-                  label="Total Pedidos"
+                  name="maintenanceCount"
+                  label="Manutenções"
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
                 <SortableHeader
-                  name="totalSpent"
-                  label="Total Gasto"
+                  name="utilizationRate"
+                  label="Taxa Utilização"
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
                 <SortableHeader
-                  name="lastOrderDate"
-                  label="Último Pedido"
+                  name="lastMaintenance"
+                  label="Última Manutenção"
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
@@ -210,51 +190,58 @@ const CustomerTable = () => {
                   sortConfig={sortConfig}
                   requestSort={requestSort}
                 />
-                <th className="p-4 text-sm flex justify-between items-center  font-medium text-gray-600">
-                  Ações
-                  <AddCustomerButton />
-                </th>
+                <th className="p-4 text-sm font-medium text-gray-600">Ações</th>
               </tr>
             </thead>
             <tbody>
-              {items.map((customer) => (
-                <tr key={customer.id} className="border-b">
+              {items.map((equipment) => (
+                <tr key={equipment.id} className="border-b">
                   <td className="p-4">
                     <div className="flex flex-col">
                       <span className="font-medium text-gray-900">
-                        {customer.name}
+                        {equipment.name}
                       </span>
                       <span className="text-sm text-gray-500">
-                        {customer.email}
+                        {equipment.model}
                       </span>
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      <span className="text-gray-900">{customer.company}</span>
-                      <span className="text-sm text-gray-500 flex items-center">
-                        <MapPin size={14} className="mr-1" />
-                        {customer.location}
+                      <span className="text-gray-900">
+                        {equipment.serialNumber}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {equipment.currentClient}
                       </span>
                     </div>
                   </td>
                   <td className="p-4">
-                    <span className="font-medium">{customer.totalOrders}</span>
+                    <span className="font-medium">
+                      {equipment.maintenanceCount}
+                    </span>
                   </td>
                   <td className="p-4">
-                    <span className="font-medium">{customer.totalSpent}</span>
+                    <span className="font-medium">
+                      {equipment.utilizationRate}
+                    </span>
                   </td>
-                  <td className="p-4 text-sm">{customer.lastOrderDate}</td>
+                  <td className="p-4 text-sm">{equipment.lastMaintenance}</td>
                   <td className="p-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm
-                        ${
-                          customer.status === "active"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
+                      className={`px-3 py-1 rounded-full text-sm ${
+                        equipment.status === "in_use"
+                          ? "bg-green-100 text-green-800"
+                          : equipment.status === "maintenance"
+                          ? "bg-orange-100 text-orange-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
                     >
-                      {customer.status === "active" ? "Ativo" : "Inativo"}
+                      {equipment.status === "in_use"
+                        ? "Em Uso"
+                        : equipment.status === "maintenance"
+                        ? "Em Manutenção"
+                        : "Disponível"}
                     </span>
                   </td>
                   <td className="p-4">
@@ -267,10 +254,10 @@ const CustomerTable = () => {
                       </button>
                       <button
                         className="p-2 text-purple-600 hover:bg-purple-50 rounded"
-                        onClick={() => {
-                          setSelectedCustomer(customer);
-                          setIsEditModalOpen(true);
-                        }}
+                        // onClick={() => {
+                        //   setSelectedEquipment(equipment);
+                        //   setIsEditModalOpen(true);
+                        // }}
                       >
                         <Edit size={16} />
                       </button>
@@ -297,23 +284,8 @@ const CustomerTable = () => {
           </div>
         </div>
       </div>
-      {selectedCustomer && (
-        <CustomerEditModal
-          customer={selectedCustomer}
-          isOpen={isEditModalOpen}
-          onClose={() => {
-            setIsEditModalOpen(false);
-            setSelectedCustomer(null);
-          }}
-          onSave={(updatedCustomer) => {
-            console.log("Updated customer:", updatedCustomer);
-            setIsEditModalOpen(false);
-            setSelectedCustomer(null);
-          }}
-        />
-      )}
     </div>
   );
 };
 
-export default CustomerTable;
+export default EquipmentDashboard;

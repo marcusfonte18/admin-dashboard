@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
 import {
   MoreVertical,
@@ -13,8 +14,8 @@ import {
 } from "lucide-react";
 import { SortableHeader } from "./table/sortable-header";
 import { Customer, SortConfig } from "./types";
-import { CustomerEditModal } from "./modal-customers";
 import AddCustomerButton from "./modal-add-customer";
+import CustomerModal from "./modal-customers";
 
 const useSortableData = (
   items: Customer[],
@@ -298,14 +299,14 @@ const CustomerTable = () => {
         </div>
       </div>
       {selectedCustomer && (
-        <CustomerEditModal
+        <CustomerModal
           customer={selectedCustomer}
           isOpen={isEditModalOpen}
           onClose={() => {
             setIsEditModalOpen(false);
             setSelectedCustomer(null);
           }}
-          onSave={(updatedCustomer) => {
+          onSave={(updatedCustomer: any) => {
             console.log("Updated customer:", updatedCustomer);
             setIsEditModalOpen(false);
             setSelectedCustomer(null);

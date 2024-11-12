@@ -3,10 +3,10 @@
 import { useState } from "react";
 // import { TrendingUp, DollarSign, Users, Package } from "lucide-react";
 // import { StatCard } from "./components/stat-card";
-import { Header } from "./components/header";
-import CustomerTable from "./components/customers-table";
-import { Orders } from "./components/orders";
-import EquipmentDashboard from "./components/equipaments";
+import { Header } from "../components/header";
+import CustomerTable from "../components/customers-table";
+import { Orders } from "../components/orders";
+import EquipmentDashboard from "../components/equipaments";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ordens");

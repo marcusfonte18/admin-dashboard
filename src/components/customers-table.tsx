@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   MoreVertical,
   Mail,
@@ -13,44 +12,10 @@ import {
   Users,
 } from "lucide-react";
 import { SortableHeader } from "./table/sortable-header";
-import { Customer, SortConfig } from "./types";
+import { Customer } from "./types";
 import AddCustomerButton from "./modal-add-customer";
-import CustomerModal from "./modal-customers";
-
-const useSortableData = (
-  items: Customer[],
-  config: SortConfig<Customer> | null = null
-) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig<Customer> | null>(
-    config
-  );
-
-  const sortedItems = useMemo(() => {
-    const sortableItems = [...items];
-    if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [items, sortConfig]);
-
-  const requestSort = (key: keyof Customer) => {
-    let direction: "ascending" | "descending" = "ascending";
-    if (sortConfig?.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  return { items: sortedItems, requestSort, sortConfig };
-};
+import { CustomerModal } from "./modal-customers";
+import useSortable from "@/hooks/useSortableTable";
 
 const CustomerTable = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -97,7 +62,7 @@ const CustomerTable = () => {
     },
   ];
 
-  const { items, requestSort, sortConfig } = useSortableData(customers);
+  const { items, requestSort, sortConfig } = useSortable<Customer>(customers);
 
   const stats = {
     totalCustomers: customers.length,
@@ -306,7 +271,7 @@ const CustomerTable = () => {
             setIsEditModalOpen(false);
             setSelectedCustomer(null);
           }}
-          onSave={(updatedCustomer: any) => {
+          onSave={(updatedCustomer) => {
             console.log("Updated customer:", updatedCustomer);
             setIsEditModalOpen(false);
             setSelectedCustomer(null);

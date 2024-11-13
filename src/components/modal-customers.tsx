@@ -1,16 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-
 import { Customer } from "./types";
+import { Button } from "./ui/button";
 
 interface CustomerEditModalProps {
   customer: Customer;
@@ -19,89 +10,154 @@ interface CustomerEditModalProps {
   onSave: (customer: Customer) => void;
 }
 
-const CustomerModal = ({
+export const CustomerModal: React.FC<CustomerEditModalProps> = ({
+  customer,
   isOpen,
   onClose,
-  customer,
   onSave,
-}: CustomerEditModalProps) => {
-  if (!customer) return null;
-
-  console.log(onSave);
+}) => {
+  if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Editar Cliente</DialogTitle>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+
+      {/* Modal */}
+      <div className="relative z-10 w-full max-w-2xl bg-white rounded-lg shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Editar Cliente: {customer.name}
+          </h2>
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100"
+            className="p-1 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
           >
-            <X className="h-4 w-4" />
+            <X size={20} />
           </button>
-        </DialogHeader>
-
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Nome</Label>
-            <Input id="name" defaultValue={customer.name} className="w-full" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" defaultValue={customer.email} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Telefone</Label>
-              <Input id="phone" defaultValue={customer.phone} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="company">Empresa</Label>
-              <Input id="company" defaultValue={customer.company} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="location">Localização</Label>
-              <Input id="location" defaultValue={customer.location} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                defaultValue={customer.status}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-              >
-                <option value="active">Ativo</option>
-                <option value="inactive">Inativo</option>
-              </select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="totalOrders">Total de Pedidos</Label>
-              <Input
-                id="totalOrders"
-                type="number"
-                defaultValue={customer.totalOrders}
-              />
-            </div>
-          </div>
         </div>
 
-        <div className="flex justify-end gap-3">
-          <Button variant="outline" onClick={onClose}>
+        {/* Content */}
+        <div className="p-6">
+          <form className="space-y-6">
+            {/* Basic Information */}
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nome
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.name}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  defaultValue={customer.status}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                >
+                  <option value="active">Ativo</option>
+                  <option value="inactive">Inativo</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  defaultValue={customer.email}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Telefone
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.phone}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+            </div>
+
+            {/* Company Information */}
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Empresa
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.company}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Localização
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.location}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+            </div>
+
+            {/* Order Information */}
+            <div className="grid grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Total de Pedidos
+                </label>
+                <input
+                  type="number"
+                  defaultValue={customer.totalOrders}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Total Gasto
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.totalSpent}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Último Pedido
+                </label>
+                <input
+                  type="text"
+                  defaultValue={customer.lastOrderDate}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className="flex justify-end gap-3 p-4 border-t bg-gray-50">
+          <Button variant="outline" onClick={onClose} className="">
             Cancelar
           </Button>
-          <Button onClick={onClose}>Salvar Alterações</Button>
+          <Button onClick={() => onSave(customer)}>Salvar Alterações</Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
-
-export default CustomerModal;

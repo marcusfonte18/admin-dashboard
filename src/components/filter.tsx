@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Search, Calendar, ArrowRight } from "lucide-react";
+import { Search } from "lucide-react";
+
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import DateRangeFilter from "./data-ranger-filter";
 
 interface SearchFiltersProps {
   onSearch: (filters: SearchFilters) => void;
@@ -33,86 +44,44 @@ const SearchFilters = ({ onSearch }: SearchFiltersProps) => {
   };
 
   return (
-    <div className="w-ful rounded-lg shadow-sm">
-      <form onSubmit={handleSubmit} className="flex gap-3 items-center">
-        {/* Status Select */}
-        <div className="relative">
-          <select
-            name="status"
-            value={filters.status}
-            onChange={handleChange}
-            className="h-10 px-3 py-2 rounded-md border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent w-[200px] appearance-none cursor-pointer"
-          >
-            <option value="">Status</option>
-            <option value="pending">Pendente</option>
-            <option value="completed">Completo</option>
-            <option value="cancelled">Cancelado</option>
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Order Date Input */}
-        <div className="relative">
-          <input
-            type="date"
-            name="orderDate"
-            value={filters.orderDate}
-            onChange={handleChange}
-            className="h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 w-[200px] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          />
-          <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-        </div>
-
-        <ArrowRight className="h-5 w-5 text-gray-400" />
-
-        {/* Completion Date Input */}
-        <div className="relative">
-          <input
-            type="date"
-            name="completionDate"
-            value={filters.completionDate}
-            onChange={handleChange}
-            className="h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 w-[200px] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          />
-          <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-        </div>
-
-        {/* Order Number Input */}
-        <div className="relative flex-1">
-          <input
-            type="text"
-            name="orderNumber"
-            value={filters.orderNumber}
-            onChange={handleChange}
-            placeholder="buscar"
-            className="h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 w-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          />
-          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-        </div>
-
-        {/* Filter Button */}
-        <button
-          type="submit"
-          className="h-10 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors"
+    <form onSubmit={handleSubmit} className="flex gap-3 items-center">
+      <div className="relative w-[150px]">
+        <Select
+          name="status"
+          value={filters.status}
+          onValueChange={(value) =>
+            handleChange({
+              target: { name: "status", value },
+            } as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)
+          }
         >
-          Filtrar
-        </button>
-      </form>
-    </div>
+          <SelectTrigger className="">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">Status</SelectItem>
+            <SelectItem value="pending">Pendente</SelectItem>
+            <SelectItem value="completed">Completo</SelectItem>
+            <SelectItem value="cancelled">Cancelado</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <DateRangeFilter />
+
+      <div className="relative flex-1">
+        <Input
+          type="text"
+          name="orderNumber"
+          value={filters.orderNumber}
+          onChange={handleChange}
+          placeholder="Buscar"
+        />
+        <Search className="absolute left-3 top-2.5 h-5 w-5 text-popover-foreground" />
+      </div>
+
+      <Button type="submit">Filtrar</Button>
+    </form>
   );
 };
 

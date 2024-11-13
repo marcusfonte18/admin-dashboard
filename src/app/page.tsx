@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-// import { TrendingUp, DollarSign, Users, Package } from "lucide-react";
-// import { StatCard } from "./components/stat-card";
-import { Header } from "../components/header";
-import CustomerTable from "../components/customers-table";
-import { Orders } from "../components/orders";
-import EquipmentDashboard from "../components/equipaments";
+
+import { Header } from "@/components/header";
+import CustomerTable from "@/components/customers-table";
+import { Orders } from "@/components/orders";
+import EquipmentDashboard from "@/components/equipaments";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ordens");
@@ -42,24 +42,6 @@ export default function Dashboard() {
   //   },
   // ];
 
-  const getComponent = () => {
-    switch (activeTab) {
-      case "ordens":
-        return <Orders />;
-
-      case "clientes":
-        return <CustomerTable />;
-
-      case "equipamentos":
-        return <EquipmentDashboard />;
-
-      default:
-        return <Orders />;
-    }
-  };
-
-  const Component = getComponent();
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -78,28 +60,30 @@ export default function Dashboard() {
           ))}
         </div> */}
 
-        {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
-          <nav className="-mb-px flex space-x-8">
-            {["ordens", "clientes", "equipamentos"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`
-                  py-4 px-1 border-b-2 font-medium text-sm
-                  ${
-                    activeTab === tab
-                      ? "border-purple-600 text-purple-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }
-                `}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
-          </nav>
-        </div>
-        {Component}
+        <Tabs
+          value={activeTab}
+          onValueChange={(value: string) => setActiveTab(value)}
+        >
+          <div className="border-b border-gray-200 mb-6">
+            <TabsList>
+              {["ordens", "clientes", "equipamentos"].map((tab) => (
+                <TabsTrigger key={tab} value={tab}>
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+
+          <TabsContent value="ordens">
+            <Orders />
+          </TabsContent>
+          <TabsContent value="clientes">
+            <CustomerTable />
+          </TabsContent>
+          <TabsContent value="equipamentos">
+            <EquipmentDashboard />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

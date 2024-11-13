@@ -1,6 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
 import { Order } from "./types";
+import { Button } from "./ui/button";
 
 interface OrderEditModalProps {
   order: Order;
@@ -189,20 +190,11 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ({
           </form>
         </div>
 
-        {/* Footer */}
         <div className="flex justify-end gap-3 p-4 border-t bg-gray-50">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
+          <Button variant="outline" onClick={onClose}>
             Cancelar
-          </button>
-          <button
-            onClick={() => onSave(order)}
-            className="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
-            Salvar Alterações
-          </button>
+          </Button>
+          <Button onClick={() => onSave(order)}>Salvar Alterações</Button>
         </div>
       </div>
     </div>

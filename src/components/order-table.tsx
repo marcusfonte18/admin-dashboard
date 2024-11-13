@@ -1,66 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { MoreVertical, Download, Edit, Trash2 } from "lucide-react";
-import { Order, SortConfig, SortDirection } from "./types";
+import { Order } from "./types";
 import { SortableHeader } from "./table/sortable-header";
 import { OrderEditModal } from "./modal-order";
-
-const useSortableData = (
-  items: Order[],
-  config: SortConfig<Order> | null = null
-) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig<Order> | null>(
-    config
-  );
-
-  const sortedItems = useMemo(() => {
-    const sortableItems = [...items];
-    if (sortConfig !== null) {
-      sortableItems.sort((a: any, b: any) => {
-        let aValue = a[sortConfig.key];
-        let bValue = b[sortConfig.key];
-
-        if (sortConfig.key.toLowerCase().includes("date")) {
-          aValue = new Date(aValue.split("-").reverse().join("-"))
-            .getTime()
-            .toString();
-          bValue = new Date(bValue.split("-").reverse().join("-"))
-            .getTime()
-            .toString();
-        }
-
-        if (sortConfig.key === "id") {
-          return sortConfig.direction === "ascending"
-            ? parseInt(aValue) - parseInt(bValue)
-            : parseInt(bValue) - parseInt(aValue);
-        }
-
-        if (aValue < bValue) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [items, sortConfig]);
-
-  const requestSort = (key: keyof Order) => {
-    let direction: SortDirection = "ascending";
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === "ascending"
-    ) {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  return { items: sortedItems, requestSort, sortConfig };
-};
+import useSortable from "@/hooks/useSortableTable";
 
 const OrderTable: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -129,7 +72,7 @@ const OrderTable: React.FC = () => {
     },
   ];
 
-  const { items, requestSort, sortConfig } = useSortableData(orders);
+  const { items, requestSort, sortConfig } = useSortable<Order>(orders);
 
   return (
     <div className="">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MoreVertical, Download, Edit, Trash2 } from "lucide-react";
 import { Order } from "./types";
-import { SortableHeader } from "./table/sortable-header";
+import { SortableHeader } from "./sortable-header";
 import { OrderEditModal } from "./modal-order";
 import useSortable from "@/hooks/useSortableTable";
 

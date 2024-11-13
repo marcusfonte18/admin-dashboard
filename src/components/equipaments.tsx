@@ -10,7 +10,7 @@ import {
   Trash2,
   MoreVertical,
 } from "lucide-react";
-import { SortableHeader } from "./table/sortable-header";
+import { SortableHeader } from "./sortable-header";
 
 const useSortableData = (items: any, config = null) => {
   const [sortConfig, setSortConfig] = useState<any>(config);

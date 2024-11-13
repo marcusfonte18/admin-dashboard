@@ -11,7 +11,7 @@ import {
   DollarSign,
   Users,
 } from "lucide-react";
-import { SortableHeader } from "./table/sortable-header";
+import { SortableHeader } from "./sortable-header";
 import { Customer } from "./types";
 import AddCustomerButton from "./modal-add-customer";
 import { CustomerModal } from "./modal-customers";

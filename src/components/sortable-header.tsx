@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { SortableHeaderProps } from "../types";
+import { SortableHeaderProps } from "./types";
 
 export const SortableHeader = <T extends object>({
   name,

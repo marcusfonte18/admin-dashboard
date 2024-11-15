@@ -43,3 +43,8 @@ export interface SortableHeaderProps<T> {
   sortConfig: SortConfig<T> | null;
   requestSort: (key: keyof T) => void;
 }
+
+export interface HeaderCell {
+  id: keyof Order;
+  label: string;
+}

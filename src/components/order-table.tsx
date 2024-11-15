@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Download, Edit, Trash2, ChevronDown, ChevronUp } from "lucide-react";
-import { Order } from "./types";
+
+import useSortable from "@/hooks/useSortableTable";
+
 import { SortableHeader } from "./sortable-header";
 import { OrderEditModal } from "./modal-order";
-import useSortable from "@/hooks/useSortableTable";
 import { Table } from "./ui/table";
 import { Button } from "./ui/button";
 
-interface HeaderCell {
-  id: keyof Order;
-  label: string;
-}
+import { HeaderCell, Order } from "./types";
 
 const OrderTable = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -109,36 +107,6 @@ const OrderTable = () => {
                   />
                 ))}
 
-                {/* <SortableHeader
-                  name="orderDate"
-                  label="Data do Pedido"
-                  sortConfig={sortConfig}
-                  requestSort={requestSort}
-                />
-                <SortableHeader
-                  name="executionDate"
-                  label="Data de Execução"
-                  sortConfig={sortConfig}
-                  requestSort={requestSort}
-                />
-                <SortableHeader
-                  name="id"
-                  label="Nº"
-                  sortConfig={sortConfig}
-                  requestSort={requestSort}
-                />
-                <SortableHeader
-                  name="modality"
-                  label="Modalidade"
-                  sortConfig={sortConfig}
-                  requestSort={requestSort}
-                />
-                <SortableHeader
-                  name="idEquipament"
-                  label="ID do Equipamento"
-                  sortConfig={sortConfig}
-                  requestSort={requestSort}
-                /> */}
                 <Table.Head className="p-4 text-sm font-medium text-gray-600">
                   Ações
                 </Table.Head>

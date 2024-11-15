@@ -1,11 +1,8 @@
 // types.ts
 export interface OrderDetail {
   id: number;
-  name: string;
-  code: string;
-  quantity: number;
-  netValue: string;
-  grossValue: string;
+  description: string;
+  employee: string;
 }
 
 export interface Order {
@@ -14,8 +11,7 @@ export interface Order {
   orderDate: string;
   executionDate: string;
   modality: string;
-  paymentDate: string;
-  value: string;
+  idEquipament: string;
   details?: OrderDetail[];
 }
 
